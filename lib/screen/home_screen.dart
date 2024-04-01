@@ -1,5 +1,7 @@
 import 'package:calendar_scheduler/component/calendar.dart';
+import 'package:calendar_scheduler/component/schedule_card.dart';
 import 'package:calendar_scheduler/component/today_banner.dart';
+import 'package:calendar_scheduler/const/colors.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -29,7 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
               onDaySelected: onDaySelected,
             ),
             SizedBox(height: 8.0,),
-            TodayBanner(selectedDay: selectedDay, scheduleCount: 3)
+            TodayBanner(selectedDay: selectedDay, scheduleCount: 3),
+            SizedBox(height: 8.0,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ScheduleCard(startTime: 12, endTime: 14, content: '프로그래밍 공부하기', color: Colors.red),
+            )
           ],
         ),
       )
