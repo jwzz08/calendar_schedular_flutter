@@ -31,6 +31,8 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
               padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),
               child: Form(
                 key: formKey,
+                //form에 입력을 할 때 실시간으로 검증해준다
+                autovalidateMode: AutovalidateMode.always,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
