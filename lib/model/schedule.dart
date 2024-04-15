@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
 // Table {ID, CONTENT, DATE, STARTTIME, ENDTIME, COLORID, CREATEDAT}
-class Schedule extends Table {
+class Schedules extends Table {
   // PRIMARY KEY
   //1
   //2

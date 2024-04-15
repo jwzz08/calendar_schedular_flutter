@@ -24,7 +24,16 @@ class CustomTextField extends StatelessWidget {
   }
 
   Widget renderTextField(){
-    return TextField(
+    return TextFormField(
+      //null이 return 되면 에러가 없다.
+      //에러가 있으면 에러를 String 값으로 리턴해준다
+      validator: (String? val){
+        if(val == null || val.isEmpty){
+          return '값을 입력해주세용';
+        }
+
+        return null;
+      },
       cursorColor: Colors.grey,
       maxLines: isTime? 1 : null,
       expands: !isTime, // = isTime ? false : true,
