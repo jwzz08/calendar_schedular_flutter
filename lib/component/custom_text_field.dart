@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
+  final FormFieldSetter<String>? onSaved;
   final String label;
 
   //true - 시간(time) / false - 내용(content)
   final bool isTime;
 
-  const CustomTextField({required this.label, required this.isTime, Key? key})
+  const CustomTextField({required this.onSaved, required this.label, required this.isTime, Key? key})
       : super(key: key);
 
   @override
@@ -30,6 +31,7 @@ class CustomTextField extends StatelessWidget {
 
   Widget renderTextField() {
     return TextFormField(
+      onSaved: onSaved,
       //null이 return 되면 에러가 없다.
       //에러가 있으면 에러를 String 값으로 리턴해준다
       validator: (String? val) {
