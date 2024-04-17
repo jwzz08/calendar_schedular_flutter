@@ -3,6 +3,7 @@ import 'package:calendar_scheduler/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:drift/drift.dart';
+import 'package:get_it/get_it.dart';
 
 const DEFAULT_COLORS = [
   //빨강
@@ -29,6 +30,9 @@ void main() async {
   await initializeDateFormatting();
 
   final database = LocalDatabase();
+
+  //GetIt 클래스를 사용해서 (database)를 어디에서든 불러올 수 있다. 따로 parameter를 넘겨주지 않아도 됨!!!
+  GetIt.I.registerSingleton<LocalDatabase>(database);
 
   final colors = await database.getCategoryColors();
 
