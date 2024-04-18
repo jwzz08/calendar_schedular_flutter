@@ -29,7 +29,11 @@ class LocalDatabase extends _$LocalDatabase {
   //insert를 하면 자동으로 insert 한 값의 PRIMARY KEY(ID)를 return 받을 수 있음
   Future<int> createSchedule(SchedulesCompanion data) => into(schedules).insert(data);
 
+  //Future은 단발적임. 즉 요청을 하면 한 번 받을 수 있음.
   Future<int> createCategoryColor(CategoryColorsCompanion data) => into(categoryColors).insert(data);
+
+  //stream + watch를 사용하게 되면 값이 업데이트 될 때마다 계속 받을 수 있음
+  Stream<List<Schedule>> watchSchedules() => select(schedules).watch();
 
   //select query
   //select는 값들을 순차적으로 string으로 받을 수 있기도 하고, Future로 값들을 한꺼번에 받을 수도 있음
