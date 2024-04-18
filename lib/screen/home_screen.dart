@@ -56,7 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
         showModalBottomSheet(
             context: context,
             builder: (_) {
-              return ScheduleBottomSheet(selectedDate: selectedDay,);
+              return ScheduleBottomSheet(
+                selectedDate: selectedDay,
+              );
             },
             //modalbottomsheet가 더 위로 올라오게 해줌
             isScrollControlled: true);
@@ -86,37 +88,38 @@ class _ScheduleList extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: StreamBuilder<List<Schedule>>(
-            stream: GetIt.I<LocalDatabase>().watchSchedules(),
-            builder: (context, snapshot) {
-              print('---------original data------------');
-              print(snapshot.data);
+              stream: GetIt.I<LocalDatabase>().watchSchedules(selectedDate),
+              builder: (context, snapshot) {
+                print(snapshot.data);
 
-              List<Schedule> schedules = [];
+                if(!snapshot.hasData){
+                  return Center(child: CircularProgressIndicator());
+                }
 
-              if(snapshot.hasData) {
-                schedules = snapshot.data!.where((element) => element.date == selectedDate).toList();
+                //데이터가 있는데(not null) 들어온 데이터가 길이가 0일 때(리스트에 값이 없을 때)
+                if(snapshot.hasData && snapshot.data!.isEmpty){
+                  return Center(
+                    child: Text('No Schedule'),
+                  );
+                }
 
-                print('---------------filtered data---------------');
-                print(selectedDate);
-                print(schedules);
-              }
+                return ListView.separated(
+                    itemCount: snapshot.data!.length,
+                    separatorBuilder: (context, index) {
+                      return SizedBox(
+                        height: 8.0,
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      final schedule = snapshot.data![index];
 
-              return ListView.separated(
-                  itemCount: 10,
-                  separatorBuilder: (context, index) {
-                    return SizedBox(
-                      height: 8.0,
-                    );
-                  },
-                  itemBuilder: (context, index) {
-                    return ScheduleCard(
-                        startTime: 12,
-                        endTime: 14,
-                        content: '프로그래밍 공부하기',
-                        color: Colors.red);
-                  });
-            }
-          )),
+                      return ScheduleCard(
+                          startTime: schedule.startTime,
+                          endTime: schedule.endTime,
+                          content: schedule.content,
+                          color: Colors.red);
+                    });
+              })),
     );
   }
 }

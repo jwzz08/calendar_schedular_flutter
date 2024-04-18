@@ -33,7 +33,18 @@ class LocalDatabase extends _$LocalDatabase {
   Future<int> createCategoryColor(CategoryColorsCompanion data) => into(categoryColors).insert(data);
 
   //stream + watch를 사용하게 되면 값이 업데이트 될 때마다 계속 받을 수 있음
-  Stream<List<Schedule>> watchSchedules() => select(schedules).watch();
+  //값을 불러올 때(선택할 때) 모든 날짜의 값을 다 가져오는 오류로 인해 메모리 낭비라 where을 써서 값을 필터해줬음.
+  //현재 테이블인 schedules의 date column이 watchSchedules에 넣어주는 datetime의 date와 같은 경우에만 값을 불러온다.
+  Stream<List<Schedule>> watchSchedules(DateTime date){
+    //final query = select(schedules);
+    //query.where((tbl) => tbl.date.equals(date));
+    //return query.watch();
+
+    //            equals (위 세줄 코드와 아래 한 줄 코드는 같음)
+    //점 하나가 아닌 두개 즉, ..where 을 하면 결과값이 리턴되는게 아닌 where의 대상인 select(schedules)가 리턴이 되어서
+    // 결과적으로는 select(schedules)을 watch() 한 것이 된다.
+    return (select(schedules)..where((tbl) => tbl.date.equals(date))).watch();
+  }
 
   //select query
   //select는 값들을 순차적으로 string으로 받을 수 있기도 하고, Future로 값들을 한꺼번에 받을 수도 있음
